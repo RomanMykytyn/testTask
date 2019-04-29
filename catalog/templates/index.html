@@ -9,11 +9,18 @@
   <body>
     <nav class="menu">
       <ul>
-        <li><span id='navToUsers'>Users</span></li>
-        <li><span id='navToGroups'>Groups</<span></li>
+        <li><span id='navToUsers' onclick="makeTable('api/getUsers')">Users</span></li>
+        <li><span id='navToGroups' onclick="makeTable('api/getGroups')">Groups</<span></li>
       </ul>
     </nav>
+    <div id="forForm">
+
+    </div>
+    <div id="table">
+
+    </div>
     <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+    <script src="static/myScript.js" type="text/babel"></script>
   </body>
 </html>
