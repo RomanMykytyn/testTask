@@ -26,10 +26,72 @@ def addUser(request):
     for i in all_users:
         if i.name == data['name']:
             return JsonResponse({'status':'bad'})
-    
     groupId = MyGroups.objects.get(name=data['select'])
     newUser = MyUsers(name = data['name'], group = groupId)
-    '''weGotId = PlaceType.objects.get(id=id)
-    info_to_db = Place(place_name = cinema, place_type = weGotId)'''
     newUser.save()
     return JsonResponse({'status':'good'})
+
+@csrf_exempt
+def editUser(request):
+    data = json.loads(request.body)
+    all_users = MyUsers.objects.all()
+    for i in all_users:
+        if i.name == data['oldname']:
+            editUser = i
+        if i.name == data['name']:
+            return JsonResponse({'status':'bad'})
+    groupId = MyGroups.objects.get(name=data['select'])
+    editUser.name = data['name']
+    editUser.group = groupId
+    editUser.save()
+    return JsonResponse({'status':'good'})
+
+@csrf_exempt
+def deleteUser(request):
+    data = json.loads(request.body)
+    all_users = MyUsers.objects.all()
+    for i in all_users:
+        if i.name == data['name']:
+            i.delete()
+            return JsonResponse({'status':'good'})
+    return JsonResponse({'status':'bad'})
+
+@csrf_exempt
+def addGroup(request):
+    data = json.loads(request.body)
+    print(data)
+    all_groups = MyGroups.objects.all()
+    for i in all_groups:
+        if i.name == data['name']:
+            return JsonResponse({'status':'bad'})
+    newGroup = MyGroups(name = data['name'], description = data['description'])
+    newGroup.save()
+    return JsonResponse({'status':'good'})
+
+@csrf_exempt
+def editGroup(request):
+    data = json.loads(request.body)
+    all_groups = MyGroups.objects.all()
+    for i in all_groups:
+        if i.name == data['oldname']:
+            editGroup = i
+        if i.name == data['name']:
+            return JsonResponse({'status':'bad'})
+    editGroup.name = data['name']
+    editGroup.description = data['description']
+    editGroup.save()
+    return JsonResponse({'status':'good'})
+
+@csrf_exempt
+def deleteGroup(request):
+    data = json.loads(request.body)
+    all_groups = MyGroups.objects.all()
+    all_users = MyUsers.objects.all()
+    for j in all_users:
+        if j.group == data['name']:
+            return JsonResponse({'status':'bad'})
+    for i in all_groups:
+        if i.name == data['name']:
+            i.delete()
+            return JsonResponse({'status':'good'})
+    return JsonResponse({'status':'bad'})
