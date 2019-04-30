@@ -1,4 +1,4 @@
-ReactDOM.render(<h1>Hello world!</h1>, document.getElementById("table"));
+ReactDOM.render(<h1>Hello!</h1>, document.getElementById("table"));
 var Table;
 var btnuser = document.getElementById("navToUsers");
 var btngroup = document.getElementById("navToGroups");

@@ -75,7 +75,7 @@ def editGroup(request):
     for i in all_groups:
         if i.name == data['oldname']:
             editGroup = i
-        if i.name == data['name']:
+        if i.name == data['name'] and data['name'] != data['oldname']:
             return JsonResponse({'status':'bad'})
     editGroup.name = data['name']
     editGroup.description = data['description']
@@ -88,7 +88,8 @@ def deleteGroup(request):
     all_groups = MyGroups.objects.all()
     all_users = MyUsers.objects.all()
     for j in all_users:
-        if j.group == data['name']:
+        if str(j.group) == data['name']:
+            print(j.group)
             return JsonResponse({'status':'bad'})
     for i in all_groups:
         if i.name == data['name']:
