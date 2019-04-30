@@ -1,5 +1,21 @@
 ReactDOM.render(<h1>Hello world!</h1>, document.getElementById("table"));
 var Table;
+var btnuser = document.getElementById("navToUsers");
+var btngroup = document.getElementById("navToGroups");
+
+function ID() {
+  return '_' + Math.random().toString(36).substr(2, 9);
+};
+
+btnuser.addEventListener("click", function() {
+  this.classList.add("active");
+  btngroup.classList.remove("active");
+});
+
+btngroup.addEventListener("click", function() {
+  this.classList.add("active");
+  btnuser.classList.remove("active");
+});
 
 function makeTable(toPoint) {
   fetch(toPoint)
@@ -33,7 +49,7 @@ function getTableUser(data) {
   return(
     <div>
       <div>
-        <button onClick={makeFormUser}>Add User</button>
+        <button className='mainButton' onClick={makeFormUser}>Add User</button>
       </div>
       <table>
         <thead>
@@ -43,8 +59,8 @@ function getTableUser(data) {
         </thead>
         <tbody>
             {data.map(el => (
-            <tr>
-              {Object.entries(el.fields).map(el => <td>{el[1]}</td>)}<td><button name={el.fields.name} value={el.fields.group} onClick={makeFormUserEdit}>Edit</button><button name={el.fields.name} onClick={userDelete}>Delete</button></td>
+            <tr key={ID()}>
+              {Object.entries(el.fields).map(el => <td key={ID()}>{el[1]}</td>)}<td><button name={el.fields.name} value={el.fields.group} onClick={makeFormUserEdit} className='editButton'>Edit</button><button name={el.fields.name} onClick={userDelete} className='deleteButton'>Delete</button></td>
             </tr>
               ))}
         </tbody>
@@ -59,7 +75,7 @@ function getTableGroup(data) {
   return(
     <div>
       <div>
-        <button onClick={makeFormGroup}>Add Group</button>
+        <button className='mainButton' onClick={makeFormGroup}>Add Group</button>
       </div>
       <table>
         <thead>
@@ -69,8 +85,8 @@ function getTableGroup(data) {
         </thead>
         <tbody>
             {data.map(el => (
-            <tr>
-              <td>{count++}</td>{Object.entries(el.fields).map(el => <td>{el[1]}</td>)}<td><button name={el.fields.name} onClick={makeFormGroupEdit}>Edit</button><button name={el.fields.name} onClick={groupDelete}>Delete</button></td>
+            <tr key={ID()}>
+              <td>{count++}</td>{Object.entries(el.fields).map(el => <td key={ID()}>{el[1]}</td>)}<td><button name={el.fields.name} onClick={makeFormGroupEdit} className='editButton'>Edit</button><button name={el.fields.name} onClick={groupDelete} className='deleteButton'>Delete</button></td>
             </tr>
               ))}
         </tbody>
@@ -122,7 +138,7 @@ class FormUser extends React.Component {
         }
         return response.json();
       })
-      .then(data => this.setState({ data: data }));
+      .then(data => this.setState({ data: data, select: data[0].fields.name }));
   }
 
   submit() {
@@ -163,10 +179,12 @@ class FormUser extends React.Component {
       <div className="modalbackground">
       <div className="formuser">
         <h1>{this.props.isEdit ? 'Edit user'+' '+this.props.oldname : 'Add user'}.</h1>
-        <label>{this.props.isEdit ? 'New name: ' : 'Name: '}<input id="formElement" type="text" onChange={this.handleNameChange}/></label><br />
-        <label>{this.props.isEdit ? 'New group: ' : 'Group: '}<select id="formElement" onChange={this.handleSelectChange}><option selected disabled>Select a group</option>{this.state.data.map(el => (<option>{el.fields.name}</option>))}</select></label><br />
-        <button id="buttonForm" onClick={this.submit}>Add.</button>
-        <button id="buttonForm" onClick={closeForm}>Close.</button>
+        <label htmlFor="formElementName">{this.props.isEdit ? 'New name: ' : 'Name: '}</label><br />
+        <input id="formElementName" type="text" onChange={this.handleNameChange}/><br />
+        <label htmlFor="formElementDescription">{this.props.isEdit ? 'New group: ' : 'Group: '}</label><br />
+        <select id="formElementDescription" onChange={this.handleSelectChange}>{this.state.data.map(el => (<option>{el.fields.name}</option>))}</select><br />
+        <button id="buttonForm" className='editButtonForm' onClick={this.submit}>Add.</button>
+        <button id="buttonForm" className='deleteButtonForm' onClick={closeForm}>Close.</button>
       </div>
       </div>
     );
@@ -228,10 +246,12 @@ class FormGroup extends React.Component {
       <div className="modalbackground">
       <div className="formuser">
         <h1>{this.props.isEdit ? 'Edit group'+' '+this.props.oldname : 'Add group'}.</h1>
-        <label>{this.props.isEdit ? 'New name: ' : 'Name: '}<input id="formElement" type="text" onChange={this.handleNameChange}/></label><br />
-        <label>{this.props.isEdit ? 'New description: ' : 'Description: '}<textarea id="formElement" onChange={this.handleDescriptionChange}></textarea></label><br />
-        <button id="buttonForm" onClick={this.submit}>Add.</button>
-        <button id="buttonForm" onClick={closeForm}>Close.</button>
+        <label htmlFor="formElementName">{this.props.isEdit ? 'New name: ' : 'Name: '}</label><br />
+        <input id="formElementName" type="text" onChange={this.handleNameChange}/><br />
+        <label htmlFor="formElementDescription">{this.props.isEdit ? 'New description: ' : 'Description: '}</label><br />
+        <textarea id="formElementDescription" onChange={this.handleDescriptionChange} rows="4" cols="40" maxLength="150"></textarea><br />
+        <button id="buttonForm" className='editButtonForm' onClick={this.submit}>Add.</button>
+        <button id="buttonForm" className='deleteButtonForm' onClick={closeForm}>Close.</button>
       </div>
       </div>
     );
