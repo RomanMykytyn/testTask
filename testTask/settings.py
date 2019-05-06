@@ -25,7 +25,7 @@ SECRET_KEY = 'fkgs#j1+)_w3m=d79qd+p_esx@3hi@1pis^_kxfkk8@t%a_nm#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['task-reactjs.herokuapp.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
